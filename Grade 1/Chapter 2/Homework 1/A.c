@@ -1,5 +1,6 @@
 #include <stdio.h>
-int main(void)
+
+int main()
 {
 	puts("To C, or not to C: that is a question.");
 	return 0;

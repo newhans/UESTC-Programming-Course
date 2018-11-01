@@ -2,8 +2,10 @@
 
 int main()
 {
-	/*puts("153    370    371    407");
-	return 0;*/
+	/*
+	puts("153    370    371    407");
+	return 0;
+	*/
 	int f=1,i,j,k;
 	for (i=1;i<=9;i++)
 		for (j=0;j<=9;j++)

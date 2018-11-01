@@ -1,5 +1,7 @@
 #include <stdio.h>
+
 char a[15];
+
 int main()
 {
 	printf("Enter the first 12 digits of an EAN:\n\n");

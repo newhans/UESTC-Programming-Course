@@ -1,5 +1,7 @@
 #include <stdio.h>
+
 char a[3],b[5],c[5],d[15];
+
 int main()
 {
 	printf("Enter the first (single) digit:\n");

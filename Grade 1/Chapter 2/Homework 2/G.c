@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 int main()
 {
 	int x,y;
@@ -8,4 +9,3 @@ int main()
 	printf("The result is:%d\n",y);
 	return 0;
 }
-

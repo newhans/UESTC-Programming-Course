@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 int main()
 {
 	printf("Enter a number between 0 and 32767:\n");

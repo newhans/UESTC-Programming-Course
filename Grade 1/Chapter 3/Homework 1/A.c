@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 int main()
 {
 	printf("Please input your age: \n");

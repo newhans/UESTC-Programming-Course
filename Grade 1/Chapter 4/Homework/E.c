@@ -1,5 +1,7 @@
 #include <stdio.h>
+
 char a[15];
+
 int main()
 {
 	printf("Enter the first 11 digits of a UPC:\n");

@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 int main()
 {
 	double r=10.0;

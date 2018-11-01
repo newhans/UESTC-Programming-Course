@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 int main()
 {
 	puts("       *");
@@ -9,4 +10,3 @@ int main()
 	puts("  *");
 	return 0;
 }
-
