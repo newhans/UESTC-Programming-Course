@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-char mx[100],mn[100],s[100];
+char mx[20],mn[20],s[20];
 
 int main()
 {
@@ -14,6 +14,7 @@ int main()
 		printf("Enter word: ");
 		if (strcmp(mx,s)<0) strcpy(mx,s);
 		if (strcmp(mn,s)>0) strcpy(mn,s);
+		if (strlen(s)==4) break;
 	}
 	printf("\nSmallest word: %s\n",mn);
 	printf("Largest word: %s\n",mx);
