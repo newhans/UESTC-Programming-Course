@@ -83,6 +83,7 @@ void readAndInitialize(GoodsList **L, GoodsList **LL)
 		fclose(fp);
 		fp = fopen("goodsinfo.txt", "w");
 		fclose(fp);
+		*LL = p;
 		return ;
 	}
 
@@ -203,6 +204,7 @@ err:
 		(*LL) -> info = a;
 		(*LL) -> nxt = (GoodsList*)malloc(sizeof(GoodsList));
 		(*LL) = (*LL) -> nxt;
+		(*LL) -> nxt = NULL;
 		++currentCnt;
 		return ;
 	}
@@ -220,6 +222,7 @@ err:
 	GoodsList *p = *L, *nItem;
 	nItem = (GoodsList*)malloc(sizeof(GoodsList));
 	nItem -> info = a;
+	nItem -> nxt = NULL;
 
 	for (i=1;i<pos-1;i++)
 	{
@@ -331,13 +334,13 @@ void infoSearch(GoodsList *L)
 
 void deleteAll(GoodsList **L)
 {
-	GoodsList *p = *L, *q;
+	GoodsList *q;
 
-	while (p != NULL)
+	while ((*L) != NULL)
 	{
-		q = p -> nxt;
-		free(p);
-		p = q;
+		q = (*L) -> nxt;
+		free(*L);
+		*L = q;
 	}
 
 	*L = NULL;
@@ -348,17 +351,19 @@ void deleteAll(GoodsList **L)
 
 void infoFlush(GoodsList *L)
 {
-	FILE *fp = fopen("goodsinfo.txt", "w");
+	freopen("goodsinfo.txt", "w", stdout);
 	GoodsList *p = L;
 
 	while (p != list_last)
 	{
 		#define a p->info
-		fprintf(fp, "%s\t%s\t%d\t%s\t%d\t%d\n", a.id, a.name, a.price, a.discount, a.amount, a.remain);
+		printf("%s\t%s\t%d\t%s\t%d\t%d\n", a.id, a.name, a.price, a.discount, a.amount, a.remain);
 		#undef a
 
 		p = p -> nxt;
 	}
+
+	fclose(stdout);
 	return ;
 }
 
