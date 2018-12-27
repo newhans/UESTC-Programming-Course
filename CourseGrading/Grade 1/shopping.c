@@ -33,7 +33,7 @@ int currentCnt = 0;
  	list_last is the pointer of the NEXT of the last one. And it is the position which should an new element be inserted.
 **/
 
-void read_line(char s[],int lim)
+void readLine(char s[],int lim)
 {
 	char ch; int i = 0;
 	while ((ch = getchar()) < 32)
@@ -45,7 +45,7 @@ void read_line(char s[],int lim)
 		}
 	}
 	s[i++]=ch;
-	while ((ch = getchar()) >= 32&&i < lim) s[i++] = ch;
+	while ((ch = getchar()) >= 32 && i < lim) s[i++] = ch;
 	s[i] = '\0';
 	return ;
 }
@@ -146,10 +146,10 @@ void printAllInfo(GoodsList *L)
 void readItem(Goods *a)
 {
 	puts("输入新的商品信息：");
-	printf("商品 ID：");read_line(a -> id, 30);
-	printf("商品名称：");read_line(a -> name, 30);
+	printf("商品 ID：");readLine(a -> id, 30);
+	printf("商品名称：");readLine(a -> name, 30);
 	printf("商品价格：");scanf("%d", &a -> price);
-	printf("商品折扣：");read_line(a -> discount, 30);
+	printf("商品折扣：");readLine(a -> discount, 30);
 	printf("商品数量：");scanf("%d", &a -> amount);
 	printf("商品剩余：");scanf("%d", &a -> remain);
 	return ;
@@ -161,7 +161,7 @@ void infoChange(GoodsList **L)
 	GoodsList *p = *L;
 
 	printf("输入需要修改的商品 ID（-1 退出修改）：");
-	read_line(s, 30);
+	readLine(s, 30);
 
 	if (s[0] == '-' && s[1] == '1' && s[2] == '\0') return ;
 
@@ -196,7 +196,7 @@ void infoInsert(GoodsList **L, GoodsList **LL)
 	readItem(&a);
 
 err:
-	printf("输入数字以表示您要插入的商品位置：0. 商品列表尾部 1. 商品列表头部 2. 商品列表中间第 i 号位置：");
+	printf("输入数字以表示您要插入的商品位置：0. 商品列表尾部 1. 商品列表头部 i. 商品列表中间第 i 号位置：");
 	scanf("%d", &pos);
 
 	if (!pos)
@@ -209,7 +209,7 @@ err:
 		return ;
 	}
 
-	if (pos==1)
+	if (pos == 1)
 	{
 		GoodsList *nHead = (GoodsList*)malloc(sizeof(GoodsList));
 		nHead -> info = a;
@@ -224,7 +224,7 @@ err:
 	nItem -> info = a;
 	nItem -> nxt = NULL;
 
-	for (i=1;i<pos-1;i++)
+	for (i = 1; i < pos - 1; i++)
 	{
 		if (p -> nxt == NULL)
 		{
@@ -232,6 +232,12 @@ err:
 			goto err;
 		}
 		else p = p -> nxt;
+	}
+
+	if (p -> nxt == NULL)
+	{
+		puts("未找到该位置，请重新输入！");
+		goto err;
 	}
 
 	nItem -> nxt = p -> nxt;
@@ -242,12 +248,18 @@ err:
 
 void infoDelete(GoodsList **L)
 {
+	if (!currentCnt)
+	{
+		puts("列表中没有商品！");
+		return ;
+	}
+
 	char opt[3];
 	int f = 0;
 	GoodsList *p = *L, *q;
 
 	printf("输入需要删除的商品 ID（-1 退出删除）：");
-	read_line(s, 30);
+	readLine(s, 30);
 
 	if (s[0] == '-' && s[1] == '1' && s[2] == '\0') return ;
 
@@ -263,7 +275,7 @@ void infoDelete(GoodsList **L)
 			free(*L);
 			*L = p;
 			currentCnt--;
-			printf("Tips: 删除 ID 为 %s 的商品成功！", s);
+			printf("Tips: 删除 ID 为 %s 的商品成功！\n", s);
 			printf("Tips: 当前剩余商品 %d 个。\n", currentCnt);
 			return ;
 		}
@@ -302,7 +314,7 @@ void infoDelete(GoodsList **L)
 		q -> nxt = p -> nxt;
 		free(p);
 		currentCnt--;
-		printf("Tips: 删除 ID 为 %s 的商品成功！", s);
+		printf("Tips: 删除 ID 为 %s 的商品成功！\n", s);
 		printf("Tips: 当前剩余商品 %d 个。\n", currentCnt);
 	}
 	else puts("不合法的输入！");
@@ -314,13 +326,13 @@ void infoSearch(GoodsList *L)
 	GoodsList *p = L;
 
 	printf("输入需要查找的商品名称（-1 退出查找）：");
-	read_line(s, 30);
+	readLine(s, 30);
 
 	if (s[0] == '-' && s[1] == '1' && s[2] == '\0') return ;
 
 	while (p != list_last)
 	{
-		if (strcmp(p -> info.id, s) == 0)
+		if (strcmp(p -> info.name, s) == 0)
 		{
 			printOneInfo(p -> info);
 			return ;
@@ -404,32 +416,32 @@ void bubbleSort(GoodsList **L)
 	return ;
 }
 
-
-
 int main()
 {
 	readAndInitialize(&list, &list_last);
 	puts("超市商品管理系统");
 	while (1)
 	{
-		int opt;
+		char opt[3];
 
 		outputMenu();
 		printf("输入您的选择：");
-		scanf("%d", &opt);
+		scanf("%s", opt);
 
-		switch (opt)
+		switch (opt[0])
 		{
-			case 1: printAllInfo(list);break;
-			case 2: infoChange(&list);break;
-			case 3: infoInsert(&list, &list_last);break;
-			case 4: infoDelete(&list);break;
-			case 5: infoSearch(list);break;
-			case 6: infoFlush(list);deleteAll(&list);return 0;
-			case 7: bubbleSort(&list);break;
-			case 8: deleteAll(&list);break;
+			case  '1': printAllInfo(list);break;
+			case  '2': infoChange(&list);break;
+			case  '3': infoInsert(&list, &list_last);break;
+			case  '4': infoDelete(&list);break;
+			case  '5': infoSearch(list);break;
+			case  '6': infoFlush(list);deleteAll(&list);return 0;
+			case  '7': bubbleSort(&list);break;
+			case  '8': deleteAll(&list);break;
 			default: return 0;
 		}
+
+		puts("");
 	}
 	return 0;
 }
