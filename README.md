@@ -4,8 +4,8 @@
 
 This project contains assignments of the *Program Design and Algorithm Foundation*. Among them, `Grade 1` is the assignments of *the C Programming Language* at the first semester, `OESTC@ISE` is the assignments on the experiment platform, `Grade 2` is the assignments of *the Data Structure and Algorithm Foundation* at the second semester.
 
-玩得愉快！
+玩得愉快！  
 Enjoy yourselves!
 
-HeRaNO
+HeRaNO  
 2019.3.1
