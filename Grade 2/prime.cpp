@@ -9,6 +9,7 @@ bool isprime(int x)
 	return true;
 }
 
+//A naive algorithm, Time complexity: O(n\sqrt n) Space comlexity: O(n)
 std::vector <int> prime1(int n)
 {
 	std::vector <int> v;
@@ -17,6 +18,7 @@ std::vector <int> prime1(int n)
 	return v;
 }
 
+//Sieve of Eratosthenes, Time complexity: O(n loglog n) Space comlexity: O(n)
 std::vector <int> prime2(int n)
 {
 	std::vector <int> v;
@@ -30,6 +32,7 @@ std::vector <int> prime2(int n)
 	return v;
 }
 
+//Linear shaker, Time complexity: O(n) Space comlexity: O(n)
 std::vector <int> prime3(int n)
 {
 	std::vector <int> v;
