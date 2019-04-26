@@ -9,8 +9,8 @@
 typedef struct {
 	char sNo[MAX_ID_LEN];
 	char sName[MAX_NAME_LEN];
-	bool sex; // 0 - 男    1 - 女
-	bool major; // 0 - 软件技术    1 - 人工智能
+	bool sex; /* 0 - 男    1 - 女 */
+	bool major; /* 0 - 软件技术    1 - 人工智能 */
 } Student;
 
 typedef struct {
@@ -63,12 +63,12 @@ void outputMenu()
 	puts("2. 输入课程信息并保存；");
 	puts("3. 输入成绩信息并保存；");
 	puts("4. 读取学生信息，创建按学号升序的单向链表；");
-	puts("5. 读取学生信息，创建按课程号升序的单向链表；");
+	puts("5. 读取课程信息，创建按课程号升序的单向链表；");
 	puts("6. 读取成绩信息，创建按学号和课程号升序的单向链表；");
 	puts("7. 读取成绩信息，查询所有学生所有课程的考试成绩（需先运行 1, 2, 3）；");
 	puts("8. 读取成绩信息，查询所有学生指定课程的考试成绩（需先运行 7）；");
 	puts("9. 读取成绩信息，查询指定课程成绩小于 60 分的学生（需先运行 7）；");
-	puts("a. 将 4 中生成的链表反转；");
+	puts("a. 将 4 中生成的链表反转（需先运行 4）；");
 	puts("b. 用链式队列解决 7 的问题；");
 	puts("其他. 退出系统；");
 	puts("*******************************************");
@@ -78,8 +78,8 @@ void outputMenu()
 void inputStudentInfo()
 {
 	FILE *fp = fopen("student.dat", "w");
-	char t[200];
-	for (int i = 1; i <= 10; i++)
+	char t[200]; int i;
+	for (i = 1; i <= 10; i++)
 	{
 		printf("请输入学号：");
 		scanf("%s", t); fprintf(fp, "%s", t);
@@ -99,8 +99,8 @@ void inputStudentInfo()
 void inputCourseInfo()
 {
 	FILE *fp = fopen("course.dat", "w");
-	char t[200]; int h;
-	for (int i = 1; i <= 3; i++)
+	char t[200]; int h, i;
+	for (i = 1; i <= 3; i++)
 	{
 		printf("请输入课程编号：");
 		scanf("%s", t); fprintf(fp, "%s", t);
@@ -118,8 +118,8 @@ void inputCourseInfo()
 void inputGradeInfo()
 {
 	FILE *fp = fopen("courseGrade.dat", "w");
-	char t[200]; int h;
-	for (int i = 1; i <= 30; i++)
+	char t[200]; int h, i;
+	for (i = 1; i <= 30; i++)
 	{
 		printf("请输入学号：");
 		scanf("%s", t); fprintf(fp, "%s", t);
@@ -144,8 +144,10 @@ void rwGenerateStudentLink()
 		return ;
 	}
 
-	char t[3];
-	for (int i = 1; i <= 10; i++)
+	char t[3]; int i;
+
+	slist = NULL; slist_last = NULL;
+	for (i = 1; i <= 10; i++)
 	{
 		studentList *a = (studentList *)malloc(sizeof(studentList));
 		a -> nxt = NULL;
@@ -214,8 +216,10 @@ void rwGenerateCourseLink()
 		return ;
 	}
 
-	int t;
-	for (int i = 1; i <= 3; i++)
+	int t, i;
+
+	clist = NULL; clist_last = NULL;
+	for (i = 1; i <= 3; i++)
 	{
 		courseList *a = (courseList *)malloc(sizeof(courseList));
 		a -> nxt = NULL;
@@ -279,8 +283,10 @@ void rwGenerateGradeLink()
 		return ;
 	}
 
-	int t;
-	for (int i = 1; i <= 30; i++)
+	int t, i;
+
+	glist = NULL; glist_last = NULL;
+	for (i = 1; i <= 30; i++)
 	{
 		gradeList *a = (gradeList *)malloc(sizeof(gradeList));
 		a -> nxt = NULL;
@@ -338,15 +344,17 @@ void rwGenerateGradeLink()
 void generateReportLink()
 {
 	FILE *fp = fopen("courseGrade.dat", "r");
+	FILE *fs = fopen("studentGrade.dat", "w");
 
-	if (fp == NULL)
+	if (fp == NULL || fs == NULL)
 	{
 		puts("文件打开失败");
 		return ;
 	}
+	int t, i;
 
-	int t;
-	for (int i = 1; i <= 30; i++)
+	rlist = NULL; rlist_last = NULL;
+	for (i = 1; i <= 30; i++)
 	{
 		reportList *a = (reportList *)malloc(sizeof(reportList));
 		a -> nxt = NULL;
@@ -416,9 +424,11 @@ void generateReportLink()
 	{
 		#define aa p -> info.a
 		printf("%s %s %s %s ", aa.sNo, aa.sName, aa.sex ? "F" : "M", aa.major ? "A" : "S");
+		fprintf(fs, "%s %s %s %s ", aa.sNo, aa.sName, aa.sex ? "F" : "M", aa.major ? "A" : "S");
 		#undef aa
 		#define aa p -> info.b
 		printf("%s %s %d %d\n", aa.cNo, aa.cName, aa.classHours, p -> info.score);
+		fprintf(fs, "%s %s %d %d\n", aa.cNo, aa.cName, aa.classHours, p -> info.score);
 		#undef aa
 		p = p -> nxt;
 	}
@@ -433,10 +443,12 @@ void generatePartReportLink()
 	char t[10];
 	scanf("%s", t);
 	reportList *p = rlist;
+	bool haveCourse = false;
 	while (p)
 	{
 		if (strcmp(p -> info.b.cNo, t) == 0)
 		{
+			haveCourse = true;
 			#define aa p -> info.a
 			printf("%s %s %s %s ", aa.sNo, aa.sName, aa.sex ? "F" : "M", aa.major ? "A" : "S");
 			#undef aa
@@ -446,6 +458,8 @@ void generatePartReportLink()
 		}
 		p = p -> nxt;
 	}
+
+	if (!haveCourse) puts("Didn't find the course...");
 	return ;
 }
 
@@ -455,19 +469,29 @@ void getFailedStudent()
 	char t[10];
 	scanf("%s", t);
 	reportList *p = rlist;
+
+	bool haveCourse = false, haveFailed = false;
 	while (p)
 	{
-		if (strcmp(p -> info.b.cNo, t) == 0 && p -> info.score < 60)
+		if (strcmp(p -> info.b.cNo, t) == 0)
 		{
-			#define aa (p -> info.a)
-			printf("%s %s %s %s ", aa.sNo, aa.sName, aa.sex ? "F" : "M", aa.major ? "A" : "S");
-			#undef aa
-			#define aa (p -> info.b)
-			printf("%s %s %d %d\n", aa.cNo, aa.cName, aa.classHours, p -> info.score);
-			#undef aa
+			haveCourse = true;
+			if (p -> info.score < 60)
+			{
+				haveFailed = true;
+				#define aa (p -> info.a)
+				printf("%s %s %s %s ", aa.sNo, aa.sName, aa.sex ? "F" : "M", aa.major ? "A" : "S");
+				#undef aa
+				#define aa (p -> info.b)
+				printf("%s %s %d %d\n", aa.cNo, aa.cName, aa.classHours, p -> info.score);
+				#undef aa
+			}
 		}
 		p = p -> nxt;
 	}
+
+	if (!haveCourse) puts("Didn't find the course...");
+	else if (haveFailed) puts("No failed students!");
 	return ;
 }
 
@@ -527,8 +551,10 @@ void generateReportLink_queue()
 		return ;
 	}
 
-	int t;
-	for (int i = 1; i <= 30; i++)
+	int t, i;
+
+	rlist = NULL; rlist_last = NULL;
+	for (i = 1; i <= 30; i++)
 	{
 		reportList *a = (reportList *)malloc(sizeof(reportList));
 		a -> nxt = NULL;
